@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The College Owl Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #7c3aed;
+      --purple-light: #a855f7;
+      --cyan: #06b6d4;
+      --gold: #f59e0b;
+      --gold-light: #fcd34d;
+      --bg: #05050f;
+      --card-bg: rgba(255,255,255,0.04);
+      --text: #f0f0ff;
+      --muted: rgba(240,240,255,0.5);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ── Starfield canvas ── */
+    #stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── Ambient glow orbs ── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 600px; height: 600px; background: var(--purple); top: -200px; left: -200px; animation-delay: 0s; }
+    .orb-2 { width: 500px; height: 500px; background: var(--cyan);   bottom: -150px; right: -150px; animation-delay: -6s; }
+    .orb-3 { width: 400px; height: 400px; background: var(--gold);   top: 40%; left: 50%; transform: translate(-50%,-50%); animation-delay: -12s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.08); }
+    }
+
+    /* ── Layout ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* ── Owl ── */
+    .owl-wrap {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin-bottom: 8px;
+    }
+
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1.5px solid transparent;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin linear infinite;
+    }
+    .ring-1 {
+      width: 140px; height: 140px;
+      border-color: rgba(124,58,237,0.5) transparent transparent transparent;
+      animation-duration: 4s;
+    }
+    .ring-2 {
+      width: 160px; height: 160px;
+      border-color: transparent rgba(6,182,212,0.5) transparent transparent;
+      animation-duration: 7s;
+      animation-direction: reverse;
+    }
+    .ring-3 {
+      width: 180px; height: 180px;
+      border-color: rgba(245,158,11,0.4) transparent rgba(245,158,11,0.4) transparent;
+      animation-duration: 11s;
+    }
+
+    @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+    .owl-face {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 88px; height: 88px;
+      background: radial-gradient(circle at 40% 35%, #1a0a2e, #0d0d1f);
+      border-radius: 50%;
+      border: 2px solid rgba(124,58,237,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      animation: owlBob 3s ease-in-out infinite, owlGlow 3s ease-in-out infinite;
+      box-shadow: 0 0 30px rgba(124,58,237,0.3), inset 0 0 20px rgba(124,58,237,0.1);
+    }
+
+    @keyframes owlBob {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+      50%       { transform: translate(-50%, -50%) translateY(-6px); }
+    }
+    @keyframes owlGlow {
+      0%, 100% { box-shadow: 0 0 30px rgba(124,58,237,0.3), inset 0 0 20px rgba(124,58,237,0.1); }
+      50%       { box-shadow: 0 0 50px rgba(124,58,237,0.6), 0 0 80px rgba(6,182,212,0.2), inset 0 0 20px rgba(124,58,237,0.2); }
+    }
+
+    /* ── Scan line on owl ── */
+    .owl-face::after {
+      content: '';
+      position: absolute;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(6,182,212,0.8), transparent);
+      top: 0; left: 0;
+      border-radius: 50%;
+      animation: scan 2.5s linear infinite;
+    }
+    @keyframes scan {
+      0%   { top: 10%; opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { top: 90%; opacity: 0; }
+    }
+
+    /* ── Header text ── */
+    .brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      letter-spacing: -0.02em;
+      text-align: center;
+      margin-top: 24px;
+      background: linear-gradient(135deg, #fff 0%, var(--purple-light) 40%, var(--cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.15;
+    }
+
+    .tagline {
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 10px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.4), rgba(6,182,212,0.4), transparent);
+      margin: 32px 0;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 16px;
+      align-self: flex-start;
+    }
+
+    /* ── Cards ── */
+    .cards {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.07);
+      text-decoration: none;
+      color: var(--text);
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Animated gradient border on hover */
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 17px;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--purple), var(--cyan), var(--gold));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover::before { opacity: 1; }
+    .card:hover { transform: translateY(-3px); border-color: transparent; }
+
+    /* Moving shimmer */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+      transition: left 0.5s;
+    }
+    .card:hover::after { left: 140%; }
+
+    .card-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 8px rgba(124,58,237,0.6));
+      animation: iconPulse 3s ease-in-out infinite;
+    }
+    .card:nth-child(2) .card-icon { animation-delay: -0.5s; filter: drop-shadow(0 0 8px rgba(6,182,212,0.6)); }
+    .card:nth-child(3) .card-icon { animation-delay: -1s;   filter: drop-shadow(0 0 8px rgba(168,85,247,0.6)); }
+    .card:nth-child(4) .card-icon { animation-delay: -1.5s; filter: drop-shadow(0 0 8px rgba(245,158,11,0.6)); }
+    .card:nth-child(5) .card-icon { animation-delay: -2s;   filter: drop-shadow(0 0 8px rgba(34,197,94,0.6)); }
+
+    @keyframes iconPulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.1); }
+    }
+
+    .card-text { flex: 1; }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+      margin-bottom: 3px;
+    }
+    .card-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .card-arrow {
+      font-size: 1.1rem;
+      color: var(--muted);
+      transition: transform 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .card:hover .card-arrow { transform: translateX(4px); color: var(--cyan); }
+
+    /* Badge colours per card */
+    .card[data-color="purple"] .card-title { color: #c4b5fd; }
+    .card[data-color="cyan"]   .card-title { color: #67e8f9; }
+    .card[data-color="violet"] .card-title { color: #d8b4fe; }
+    .card[data-color="amber"]  .card-title { color: var(--gold-light); }
+    .card[data-color="green"]  .card-title { color: #86efac; }
+
+    /* ── Template card (slightly different) ── */
+    .card-template {
+      border-color: rgba(245,158,11,0.2);
+      background: rgba(245,158,11,0.04);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 48px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(240,240,255,0.25);
+      line-height: 1.8;
+    }
+    .footer a { color: rgba(240,240,255,0.35); text-decoration: none; }
+    .footer a:hover { color: var(--cyan); }
+
+    /* ── Floating data particles (CSS only) ── */
+    .data-particle {
+      position: fixed;
+      font-size: 0.65rem;
+      font-family: 'Syne', monospace;
+      color: rgba(124,58,237,0.3);
+      pointer-events: none;
+      z-index: 0;
+      animation: floatUp linear infinite;
+      white-space: nowrap;
+    }
+    @keyframes floatUp {
+      from { transform: translateY(110vh); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.4; }
+      to   { transform: translateY(-10vh); opacity: 0; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 400px) {
+      .page { padding: 40px 16px 60px; }
+      .card { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Starfield -->
+  <canvas id="stars"></canvas>
+
+  <!-- Ambient orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Floating data particles (injected by JS) -->
+
+  <div class="page">
+
+    <!-- Animated owl -->
+    <div class="owl-wrap">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="owl-face">🦉</div>
+    </div>
+
+    <h1 class="brand">The College Owl Suite</h1>
+    <p class="tagline">AI Counseling Tools · University Admissions for International Students</p>
+
+    <div class="divider"></div>
+
+    <span class="section-label">// AI Counseling Tools</span>
+
+    <div class="cards">
+
+      <a class="card" data-color="purple"
+         href="https://chatgpt.com/g/g-689b0f604f8c8191b231b2e4d9ae315e-college-degree-search"
+         target="_blank" rel="noopener">
+        <span class="card-icon">🔍</span>
+        <div class="card-text">
+          <div class="card-title">Degree Search Owl</div>
+          <div class="card-desc">Compare universities, entry requirements &amp; tuition worldwide</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" data-color="cyan"
+         href="https://chatgpt.com/g/g-687b0b42fc1c819181a8e787b799556a-college-essay-coach"
+         target="_blank" rel="noopener">
+        <span class="card-icon">✍️</span>
+        <div class="card-text">
+          <div class="card-title">Essay Coach Owl</div>
+          <div class="card-desc">Craft your authentic Common App personal essay</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" data-color="violet"
+         href="https://chatgpt.com/g/g-687b0cd5faec8191875a3f012a151ee8-college-specific-supplement-essay-guide"
+         target="_blank" rel="noopener">
+        <span class="card-icon">🏛️</span>
+        <div class="card-text">
+          <div class="card-title">Supplement Essay Coach</div>
+          <div class="card-desc">Write specific, compelling Why Us &amp; Why Major essays</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" data-color="amber"
+         href="https://chatgpt.com/g/g-69f8210a6fb88191bda7dfa1b88d7605-summer-planner"
+         target="_blank" rel="noopener">
+        <span class="card-icon">☀️</span>
+        <div class="card-text">
+          <div class="card-title">Summer Planning Owl</div>
+          <div class="card-desc">Build a standout summer with projects, research &amp; competitions</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+
+    <div class="divider" style="margin-top:32px;"></div>
+    <span class="section-label">// Planning Template</span>
+
+    <div class="cards">
+      <a class="card card-template" data-color="green"
+         href="https://docs.google.com/spreadsheets/d/1opqDVZ7kuT6_NOCLY1DWRtHXkqhkL-7K6OKMGMJKfCo/copy"
+         target="_blank" rel="noopener">
+        <span class="card-icon">📊</span>
+        <div class="card-text">
+          <div class="card-title">University Application Tracker</div>
+          <div class="card-desc">Your personal Google Sheets planning template — copy &amp; keep</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+    </div>
+
+    <div class="footer">
+      <p>Included with <em>University Admissions for International Students</em></p>
+      <p style="margin-top:6px;">Built for ambitious students everywhere 🌍</p>
+    </div>
+
+  </div>
+
+  <script>
+    // ── Starfield ──────────────────────────────────
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let W, H, stars = [];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function initStars() {
+      stars = Array.from({ length: 160 }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.2 + 0.2,
+        o: Math.random(),
+        speed: Math.random() * 0.3 + 0.05,
+        twinkle: Math.random() * Math.PI * 2,
+      }));
+    }
+
+    function drawStars(t) {
+      ctx.clearRect(0, 0, W, H);
+      stars.forEach(s => {
+        s.twinkle += 0.02;
+        const opacity = 0.3 + 0.7 * Math.abs(Math.sin(s.twinkle + s.o * 10));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200,200,255,${opacity})`;
+        ctx.fill();
+
+        // Slow drift upward
+        s.y -= s.speed;
+        if (s.y < 0) { s.y = H; s.x = Math.random() * W; }
+      });
+    }
+
+    // ── Shooting stars ─────────────────────────────
+    const shooters = [];
+    function spawnShooter() {
+      shooters.push({
+        x: Math.random() * W,
+        y: Math.random() * H * 0.5,
+        len: Math.random() * 120 + 60,
+        speed: Math.random() * 8 + 5,
+        opacity: 1,
+        angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
+      });
+    }
+    setInterval(spawnShooter, 2800);
+
+    function drawShooters() {
+      shooters.forEach((s, i) => {
+        const ex = s.x + Math.cos(s.angle) * s.len;
+        const ey = s.y + Math.sin(s.angle) * s.len;
+        const grad = ctx.createLinearGradient(s.x, s.y, ex, ey);
+        grad.addColorStop(0, `rgba(255,255,255,0)`);
+        grad.addColorStop(1, `rgba(200,200,255,${s.opacity})`);
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(ex, ey);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        s.x += Math.cos(s.angle) * s.speed;
+        s.y += Math.sin(s.angle) * s.speed;
+        s.opacity -= 0.015;
+        if (s.opacity <= 0) shooters.splice(i, 1);
+      });
+    }
+
+    function loop(t) {
+      drawStars(t);
+      drawShooters();
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    resize(); initStars();
+    requestAnimationFrame(loop);
+
+    // ── Floating data particles ────────────────────
+    const words = ['GPA','SAT','TOEFL','Common App','Why Us?','IB','AP','UC','Essay','Letters','Deadline','Major','Admit','Reach','Match'];
+    for (let i = 0; i < 12; i++) {
+      const el = document.createElement('div');
+      el.className = 'data-particle';
+      el.textContent = words[Math.floor(Math.random() * words.length)];
+      const leftPct = Math.random() * 100;
+      const duration = Math.random() * 18 + 14;
+      const delay = Math.random() * -duration;
+      el.style.cssText = `left:${leftPct}%;animation-duration:${duration}s;animation-delay:${delay}s;`;
+      document.body.appendChild(el);
+    }
+  </script>
+
+</body>
+</html>

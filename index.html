@@ -3,531 +3,733 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The College Owl Suite</title>
+  <title>College Owl Suite — AI University Admissions Tools</title>
+  <meta name="description" content="Intelligent AI counseling tools for international students pursuing the world's top universities." />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet" />
 
+  <style>
+    /* ─── Design Tokens ─────────────────────────────────────────────────── */
     :root {
-      --purple: #7c3aed;
-      --purple-light: #a855f7;
-      --cyan: #06b6d4;
-      --gold: #f59e0b;
-      --gold-light: #fcd34d;
-      --bg: #05050f;
-      --card-bg: rgba(255,255,255,0.04);
-      --text: #f0f0ff;
-      --muted: rgba(240,240,255,0.5);
+      --surface-abyss:  #012624;
+      --surface-trench: #011d1c;
+      --surface-reef:   #003734;
+
+      --color-snow:   #ffffff;
+      --color-fog:    #bbc7c6;
+      --color-ice:    #edfffe;
+      --color-ash:    #333333;
+      --color-teal:   #00827c;
+
+      --grad-current: linear-gradient(90deg, #00827c 0%, #cbfffc 100%);
+      --grad-aurora:  linear-gradient(90deg, #cbfffc 0%, #edfffe 26%, #fffdfa 48%, #fad1ff 89%);
+
+      --font: 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+      --max-w:       1200px;
+      --nav-h:       64px;
+      --section-gap: 120px;
+      --card-pad:    40px;
     }
 
+    /* ─── Reset ─────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
+      background: var(--surface-abyss);
+      color: var(--color-fog);
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.5;
+      letter-spacing: 0.3px;
       overflow-x: hidden;
-      position: relative;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Starfield canvas ── */
-    #stars {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
 
-    /* ── Ambient glow orbs ── */
-    .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.18;
-      pointer-events: none;
-      z-index: 0;
-      animation: drift 18s ease-in-out infinite alternate;
-    }
-    .orb-1 { width: 600px; height: 600px; background: var(--purple); top: -200px; left: -200px; animation-delay: 0s; }
-    .orb-2 { width: 500px; height: 500px; background: var(--cyan);   bottom: -150px; right: -150px; animation-delay: -6s; }
-    .orb-3 { width: 400px; height: 400px; background: var(--gold);   top: 40%; left: 50%; transform: translate(-50%,-50%); animation-delay: -12s; }
-
-    @keyframes drift {
-      from { transform: translate(0, 0) scale(1); }
-      to   { transform: translate(40px, 30px) scale(1.08); }
-    }
-
-    /* ── Layout ── */
-    .page {
-      position: relative;
-      z-index: 1;
-      max-width: 520px;
+    /* ─── Layout ─────────────────────────────────────────────────────────── */
+    .container {
+      max-width: var(--max-w);
       margin: 0 auto;
-      padding: 60px 24px 80px;
+      padding: 0 40px;
+    }
+
+    /* ─── Navigation ─────────────────────────────────────────────────────── */
+    .topnav {
+      position: fixed;
+      inset: 0 0 auto;
+      height: var(--nav-h);
+      z-index: 100;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 0;
     }
 
-    /* ── Owl ── */
-    .owl-wrap {
-      position: relative;
-      width: 160px;
-      height: 160px;
-      margin-bottom: 8px;
+    .topnav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
     }
 
-    .ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 1.5px solid transparent;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      animation: spin linear infinite;
-    }
-    .ring-1 {
-      width: 140px; height: 140px;
-      border-color: rgba(124,58,237,0.5) transparent transparent transparent;
-      animation-duration: 4s;
-    }
-    .ring-2 {
-      width: 160px; height: 160px;
-      border-color: transparent rgba(6,182,212,0.5) transparent transparent;
-      animation-duration: 7s;
-      animation-direction: reverse;
-    }
-    .ring-3 {
-      width: 180px; height: 180px;
-      border-color: rgba(245,158,11,0.4) transparent rgba(245,158,11,0.4) transparent;
-      animation-duration: 11s;
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-snow);
+      letter-spacing: 1.04px;
+      text-transform: uppercase;
     }
 
-    @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
-
-    .owl-face {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 88px; height: 88px;
-      background: radial-gradient(circle at 40% 35%, #1a0a2e, #0d0d1f);
-      border-radius: 50%;
-      border: 2px solid rgba(124,58,237,0.6);
+    .nav-logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--surface-reef);
+      border: 1px solid var(--color-ash);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 44px;
-      animation: owlBob 3s ease-in-out infinite, owlGlow 3s ease-in-out infinite;
-      box-shadow: 0 0 30px rgba(124,58,237,0.3), inset 0 0 20px rgba(124,58,237,0.1);
+      font-size: 14px;
     }
 
-    @keyframes owlBob {
-      0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
-      50%       { transform: translate(-50%, -50%) translateY(-6px); }
-    }
-    @keyframes owlGlow {
-      0%, 100% { box-shadow: 0 0 30px rgba(124,58,237,0.3), inset 0 0 20px rgba(124,58,237,0.1); }
-      50%       { box-shadow: 0 0 50px rgba(124,58,237,0.6), 0 0 80px rgba(6,182,212,0.2), inset 0 0 20px rgba(124,58,237,0.2); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
     }
 
-    /* ── Scan line on owl ── */
-    .owl-face::after {
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-snow);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    /* ─── Buttons ─────────────────────────────────────────────────────────── */
+    .btn-ghost {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 11px 22px;
+      border-radius: 6px;
+      background: transparent;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-snow);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+      cursor: pointer;
+      isolation: isolate;
+      transition: background 0.2s;
+    }
+
+    .btn-ghost::before {
       content: '';
       position: absolute;
-      width: 100%; height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(6,182,212,0.8), transparent);
-      top: 0; left: 0;
+      inset: 0;
+      border-radius: 6px;
+      padding: 1px;
+      background: var(--grad-aurora);
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .btn-ghost:hover { background: rgba(255,255,255,0.04); }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 6px;
+      background: var(--grad-current);
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--surface-trench);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ─── Eyebrow ─────────────────────────────────────────────────────────── */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      animation: scan 2.5s linear infinite;
-    }
-    @keyframes scan {
-      0%   { top: 10%; opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 1; }
-      100% { top: 90%; opacity: 0; }
+      background: var(--color-teal);
+      flex-shrink: 0;
     }
 
-    /* ── Header text ── */
-    .brand {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(1.6rem, 5vw, 2.2rem);
-      letter-spacing: -0.02em;
-      text-align: center;
-      margin-top: 24px;
-      background: linear-gradient(135deg, #fff 0%, var(--purple-light) 40%, var(--cyan) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.15;
-    }
-
-    .tagline {
-      font-size: 0.88rem;
-      color: var(--muted);
-      text-align: center;
-      margin-top: 10px;
-      letter-spacing: 0.04em;
+    .eyebrow-text {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-fog);
+      letter-spacing: 1.44px;
       text-transform: uppercase;
     }
 
-    /* ── Divider ── */
-    .divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.4), rgba(6,182,212,0.4), transparent);
-      margin: 32px 0;
-    }
-
-    /* ── Section label ── */
-    .section-label {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      margin-bottom: 16px;
-      align-self: flex-start;
-    }
-
-    /* ── Cards ── */
-    .cards {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .card {
+    /* ─── Hero ────────────────────────────────────────────────────────────── */
+    .hero {
       position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #particle-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* ─── Owl Image ─────────────────────────────────────────────────────── */
+    .owl-scene {
+      width: 240px;
+      margin: 0 auto 16px;
+      animation: owl-bob 3.2s ease-in-out infinite;
+    }
+
+    .owl-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transform-origin: 50% 90%;
+    }
+
+    @keyframes owl-bob {
+      0%,100% { transform: translateY(0);     }
+      50%      { transform: translateY(-12px); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: calc(var(--nav-h) + 40px) 40px 80px;
+      max-width: 820px;
+    }
+
+    .hero-eyebrow { margin-bottom: 32px; justify-content: center; }
+
+    .hero-headline {
+      font-size: clamp(48px, 7.5vw, 86px);
+      font-weight: 400;
+      color: var(--color-snow);
+      line-height: 1.05;
+      letter-spacing: -1.22px;
+      margin-bottom: 24px;
+    }
+
+    .hero-subhead {
+      font-size: 16px;
+      color: var(--color-fog);
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-actions {
       display: flex;
       align-items: center;
       gap: 16px;
-      padding: 18px 20px;
-      background: var(--card-bg);
+      justify-content: center;
+    }
+
+    /* ─── Sections ────────────────────────────────────────────────────────── */
+    .section { padding: var(--section-gap) 0; }
+
+    .section-header { margin-bottom: 48px; }
+
+    .section-header .eyebrow { margin-bottom: 20px; }
+
+    .section-title {
+      font-size: clamp(36px, 4vw, 61px);
+      font-weight: 400;
+      color: var(--color-snow);
+      line-height: 1.1;
+      letter-spacing: -1.22px;
+    }
+
+    .section-body {
+      font-size: 16px;
+      color: var(--color-fog);
+      line-height: 1.6;
+      margin-top: 16px;
+      max-width: 460px;
+    }
+
+    /* ─── Tool Cards ──────────────────────────────────────────────────────── */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .tool-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: var(--card-pad);
+      background: var(--surface-trench);
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.07);
-      text-decoration: none;
-      color: var(--text);
-      overflow: hidden;
-      transition: transform 0.2s, border-color 0.2s;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      cursor: pointer;
+      transition: background 0.25s;
     }
 
-    /* Animated gradient border on hover */
-    .card::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 17px;
-      padding: 1px;
-      background: linear-gradient(135deg, var(--purple), var(--cyan), var(--gold));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: destination-out;
-      mask-composite: exclude;
-      opacity: 0;
-      transition: opacity 0.3s;
+    .tool-card:hover { background: var(--surface-reef); }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
     }
 
-    .card:hover::before { opacity: 1; }
-    .card:hover { transform: translateY(-3px); border-color: transparent; }
-
-    /* Moving shimmer */
-    .card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 60%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
-      transition: left 0.5s;
-    }
-    .card:hover::after { left: 140%; }
-
-    .card-icon {
-      font-size: 2rem;
-      flex-shrink: 0;
-      filter: drop-shadow(0 0 8px rgba(124,58,237,0.6));
-      animation: iconPulse 3s ease-in-out infinite;
-    }
-    .card:nth-child(2) .card-icon { animation-delay: -0.5s; filter: drop-shadow(0 0 8px rgba(6,182,212,0.6)); }
-    .card:nth-child(3) .card-icon { animation-delay: -1s;   filter: drop-shadow(0 0 8px rgba(168,85,247,0.6)); }
-    .card:nth-child(4) .card-icon { animation-delay: -1.5s; filter: drop-shadow(0 0 8px rgba(245,158,11,0.6)); }
-    .card:nth-child(5) .card-icon { animation-delay: -2s;   filter: drop-shadow(0 0 8px rgba(34,197,94,0.6)); }
-
-    @keyframes iconPulse {
-      0%, 100% { transform: scale(1); }
-      50%       { transform: scale(1.1); }
-    }
-
-    .card-text { flex: 1; }
-    .card-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: -0.01em;
-      margin-bottom: 3px;
-    }
-    .card-desc {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.4;
-    }
+    .card-icon { font-size: 22px; line-height: 1; }
 
     .card-arrow {
-      font-size: 1.1rem;
-      color: var(--muted);
-      transition: transform 0.2s, color 0.2s;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--color-fog);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-snow);
+      font-size: 13px;
       flex-shrink: 0;
-    }
-    .card:hover .card-arrow { transform: translateX(4px); color: var(--cyan); }
-
-    /* Badge colours per card */
-    .card[data-color="purple"] .card-title { color: #c4b5fd; }
-    .card[data-color="cyan"]   .card-title { color: #67e8f9; }
-    .card[data-color="violet"] .card-title { color: #d8b4fe; }
-    .card[data-color="amber"]  .card-title { color: var(--gold-light); }
-    .card[data-color="green"]  .card-title { color: #86efac; }
-
-    /* ── Template card (slightly different) ── */
-    .card-template {
-      border-color: rgba(245,158,11,0.2);
-      background: rgba(245,158,11,0.04);
+      transition: border-color 0.2s, background 0.2s;
     }
 
-    /* ── Footer ── */
+    .tool-card:hover .card-arrow {
+      border-color: var(--color-ice);
+      background: rgba(237,255,254,0.07);
+    }
+
+    .card-heading {
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--color-snow);
+      line-height: 1.3;
+      letter-spacing: -0.29px;
+    }
+
+    .card-body {
+      font-size: 14px;
+      color: var(--color-fog);
+      line-height: 1.6;
+      letter-spacing: 0.3px;
+      flex: 1;
+    }
+
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--color-fog);
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+      margin-top: auto;
+      opacity: 0.65;
+    }
+
+    .card-tag-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--color-teal);
+    }
+
+    /* ─── Tracker Card ────────────────────────────────────────────────────── */
+    .tracker-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: center;
+      padding: var(--card-pad);
+      background: var(--surface-trench);
+      border-radius: 16px;
+      transition: background 0.25s;
+    }
+
+    .tracker-card:hover { background: var(--surface-reef); }
+
+    .tracker-heading {
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--color-snow);
+      line-height: 1.2;
+      letter-spacing: -0.47px;
+      margin-bottom: 12px;
+    }
+
+    .tracker-body {
+      font-size: 14px;
+      color: var(--color-fog);
+      line-height: 1.6;
+      letter-spacing: 0.3px;
+      max-width: 580px;
+    }
+
+    /* ─── Footer ──────────────────────────────────────────────────────────── */
     .footer {
-      margin-top: 48px;
-      text-align: center;
-      font-size: 0.75rem;
-      color: rgba(240,240,255,0.25);
-      line-height: 1.8;
-    }
-    .footer a { color: rgba(240,240,255,0.35); text-decoration: none; }
-    .footer a:hover { color: var(--cyan); }
-
-    /* ── Floating data particles (CSS only) ── */
-    .data-particle {
-      position: fixed;
-      font-size: 0.65rem;
-      font-family: 'Syne', monospace;
-      color: rgba(124,58,237,0.3);
-      pointer-events: none;
-      z-index: 0;
-      animation: floatUp linear infinite;
-      white-space: nowrap;
-    }
-    @keyframes floatUp {
-      from { transform: translateY(110vh); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 0.4; }
-      to   { transform: translateY(-10vh); opacity: 0; }
+      padding: 40px 0;
+      border-top: 1px solid var(--color-ash);
     }
 
-    /* ── Responsive ── */
-    @media (max-width: 400px) {
-      .page { padding: 40px 16px 60px; }
-      .card { padding: 14px 16px; }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-brand {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-fog);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: var(--color-fog);
+      opacity: 0.45;
+    }
+
+    /* ─── Responsive ──────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .container { padding: 0 24px; }
+      .nav-links  { display: none; }
+
+      .hero-headline { font-size: 44px; letter-spacing: -0.5px; }
+      .hero-actions  { flex-direction: column; align-items: center; }
+
+      .tools-grid    { grid-template-columns: 1fr; }
+
+      .tracker-card  { grid-template-columns: 1fr; }
+      .section-title { font-size: 36px; letter-spacing: -0.47px; }
+    }
+
+    @media (max-width: 480px) {
+      :root { --card-pad: 28px; }
+      .hero-headline { font-size: 36px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Starfield -->
-  <canvas id="stars"></canvas>
+  <!-- Navigation -->
+  <nav class="topnav">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <span class="nav-logo-icon">🦉</span>
+        College Owl Suite
+      </a>
 
-  <!-- Ambient orbs -->
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+      <ul class="nav-links">
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#planning">Planning</a></li>
+        <li><a href="mailto:info@collegeowlsuite.com">Contact</a></li>
+      </ul>
 
-  <!-- Floating data particles (injected by JS) -->
-
-  <div class="page">
-
-    <!-- Animated owl -->
-    <div class="owl-wrap">
-      <div class="ring ring-1"></div>
-      <div class="ring ring-2"></div>
-      <div class="ring ring-3"></div>
-      <div class="owl-face">🦉</div>
+      <a href="#tools" class="btn-ghost">Get Started</a>
     </div>
+  </nav>
 
-    <h1 class="brand">The College Owl Suite</h1>
-    <p class="tagline">AI Counseling Tools · University Admissions for International Students</p>
 
-    <div class="divider"></div>
+  <!-- Hero -->
+  <section class="hero">
+    <canvas id="particle-canvas"></canvas>
 
-    <span class="section-label">// AI Counseling Tools</span>
+    <div class="hero-content">
+      <div class="owl-scene">
+        <img class="owl-img" id="owl-img" src="owl.png" alt="College Owl mascot">
+      </div>
 
-    <div class="cards">
+      <div class="eyebrow hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        <span class="eyebrow-text">AI Admissions Tools</span>
+      </div>
 
-      <a class="card" data-color="purple"
-         href="https://chatgpt.com/g/g-689b0f604f8c8191b231b2e4d9ae315e-college-degree-search"
-         target="_blank" rel="noopener">
-        <span class="card-icon">🔍</span>
-        <div class="card-text">
-          <div class="card-title">Degree Search Owl</div>
-          <div class="card-desc">Compare universities, entry requirements &amp; tuition worldwide</div>
+      <h1 class="hero-headline">
+        Your AI Edge<br>in University<br>Admissions
+      </h1>
+
+      <p class="hero-subhead">
+        Intelligent counseling tools built for international students
+        pursuing the world's top universities.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#tools" class="btn-primary">Explore Tools ↗</a>
+        <a href="#planning" class="btn-ghost">View Tracker</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- AI Tools Section -->
+  <section id="tools" class="section">
+    <div class="container">
+
+      <div class="section-header">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          <span class="eyebrow-text">Explore</span>
         </div>
-        <span class="card-arrow">→</span>
-      </a>
+        <h2 class="section-title">Four tools.<br>Every stage.</h2>
+        <p class="section-body">From researching programs to writing your final supplemental essays — AI counselors available around the clock.</p>
+      </div>
 
-      <a class="card" data-color="cyan"
-         href="https://chatgpt.com/g/g-687b0b42fc1c819181a8e787b799556a-college-essay-coach"
-         target="_blank" rel="noopener">
-        <span class="card-icon">✍️</span>
-        <div class="card-text">
-          <div class="card-title">Essay Coach Owl</div>
-          <div class="card-desc">Craft your authentic Common App personal essay</div>
-        </div>
-        <span class="card-arrow">→</span>
-      </a>
+      <div class="tools-grid">
 
-      <a class="card" data-color="violet"
-         href="https://chatgpt.com/g/g-687b0cd5faec8191875a3f012a151ee8-college-specific-supplement-essay-guide"
-         target="_blank" rel="noopener">
-        <span class="card-icon">🏛️</span>
-        <div class="card-text">
-          <div class="card-title">Supplement Essay Coach</div>
-          <div class="card-desc">Write specific, compelling Why Us &amp; Why Major essays</div>
-        </div>
-        <span class="card-arrow">→</span>
-      </a>
+        <a href="https://chatgpt.com/g/g-689b0f604f8c8191b231b2e4d9ae315e-college-degree-search"
+           target="_blank" rel="noopener" class="tool-card">
+          <div class="card-top">
+            <span class="card-icon">🔍</span>
+            <span class="card-arrow">↗</span>
+          </div>
+          <h3 class="card-heading">Degree Search Owl</h3>
+          <p class="card-body">Compare universities, entry requirements, and tuition worldwide. Find the programs that fit your profile and ambitions.</p>
+          <span class="card-tag"><span class="card-tag-dot"></span>Research</span>
+        </a>
 
-      <a class="card" data-color="amber"
-         href="https://chatgpt.com/g/g-69f8210a6fb88191bda7dfa1b88d7605-summer-planner"
-         target="_blank" rel="noopener">
-        <span class="card-icon">☀️</span>
-        <div class="card-text">
-          <div class="card-title">Summer Planning Owl</div>
-          <div class="card-desc">Build a standout summer with projects, research &amp; competitions</div>
+        <a href="https://chatgpt.com/g/g-687b0b42fc1c819181a8e787b799556a-college-essay-coach"
+           target="_blank" rel="noopener" class="tool-card">
+          <div class="card-top">
+            <span class="card-icon">✍️</span>
+            <span class="card-arrow">↗</span>
+          </div>
+          <h3 class="card-heading">Essay Coach Owl</h3>
+          <p class="card-body">Craft your authentic Common App personal essay. Reveal your story with clarity and confidence that admissions officers notice.</p>
+          <span class="card-tag"><span class="card-tag-dot"></span>Writing</span>
+        </a>
+
+        <a href="https://chatgpt.com/g/g-687b0cd5faec8191875a3f012a151ee8-college-specific-supplement-essay-guide"
+           target="_blank" rel="noopener" class="tool-card">
+          <div class="card-top">
+            <span class="card-icon">🏛️</span>
+            <span class="card-arrow">↗</span>
+          </div>
+          <h3 class="card-heading">Supplement Essay Coach</h3>
+          <p class="card-body">Write specific, compelling Why Us and Why Major essays that demonstrate genuine fit for every school on your list.</p>
+          <span class="card-tag"><span class="card-tag-dot"></span>Supplements</span>
+        </a>
+
+        <a href="https://chatgpt.com/g/g-69f8210a6fb88191bda7dfa1b88d7605-summer-planner"
+           target="_blank" rel="noopener" class="tool-card">
+          <div class="card-top">
+            <span class="card-icon">☀️</span>
+            <span class="card-arrow">↗</span>
+          </div>
+          <h3 class="card-heading">Summer Planning Owl</h3>
+          <p class="card-body">Build a standout summer with research projects, competitions, and initiatives that strengthen your application profile.</p>
+          <span class="card-tag"><span class="card-tag-dot"></span>Strategy</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Planning Section -->
+  <section id="planning" class="section" style="padding-top: 0;">
+    <div class="container">
+
+      <div class="section-header">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          <span class="eyebrow-text">Planning</span>
         </div>
-        <span class="card-arrow">→</span>
+        <h2 class="section-title">Track every deadline.</h2>
+      </div>
+
+      <a href="https://docs.google.com/spreadsheets/d/1opqDVZ7kuT6_NOCLY1DWRtHXkqhkL-7K6OKMGMJKfCo/copy"
+         target="_blank" rel="noopener" class="tracker-card">
+        <div>
+          <h3 class="tracker-heading">University Application Tracker</h3>
+          <p class="tracker-body">Your personal Google Sheets planning template. Track deadlines, requirements, essays, and decisions — all in one place. Copy it once and keep it forever.</p>
+        </div>
+        <div style="flex-shrink:0;">
+          <span class="btn-primary">Copy Template ↗</span>
+        </div>
       </a>
 
     </div>
+  </section>
 
-    <div class="divider" style="margin-top:32px;"></div>
-    <span class="section-label">// Planning Template</span>
 
-    <div class="cards">
-      <a class="card card-template" data-color="green"
-         href="https://docs.google.com/spreadsheets/d/1opqDVZ7kuT6_NOCLY1DWRtHXkqhkL-7K6OKMGMJKfCo/copy"
-         target="_blank" rel="noopener">
-        <span class="card-icon">📊</span>
-        <div class="card-text">
-          <div class="card-title">University Application Tracker</div>
-          <div class="card-desc">Your personal Google Sheets planning template — copy &amp; keep</div>
-        </div>
-        <span class="card-arrow">→</span>
-      </a>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-brand">College Owl Suite</span>
+        <span class="footer-note">Built for ambitious students everywhere.</span>
+      </div>
     </div>
+  </footer>
 
-    <div class="footer">
-      <p>Included with <em>University Admissions for International Students</em></p>
-      <p style="margin-top:6px;">Built for ambitious students everywhere 🌍</p>
-    </div>
 
-  </div>
-
+  <!-- Owl: gentle rock idle + lean on scroll -->
   <script>
-    // ── Starfield ──────────────────────────────────
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let W, H, stars = [];
+    (function () {
+      const img = document.getElementById('owl-img');
+      let t = 0, prev = 0;
 
-    function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
+      function frame(ts) {
+        const dt   = Math.min(ts - prev, 50) / 1000;
+        prev = ts;
+        t   += dt;
 
-    function initStars() {
-      stars = Array.from({ length: 160 }, () => ({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        r: Math.random() * 1.2 + 0.2,
-        o: Math.random(),
-        speed: Math.random() * 0.3 + 0.05,
-        twinkle: Math.random() * Math.PI * 2,
-      }));
-    }
+        const scroll = Math.min(window.scrollY / 400, 1);
+        const rock   = Math.sin(t * 2.4) * 4;   /* ±4° gentle side-to-side rock */
+        const lean   = scroll * -10;             /* leans pointer-side as you scroll */
 
-    function drawStars(t) {
-      ctx.clearRect(0, 0, W, H);
-      stars.forEach(s => {
-        s.twinkle += 0.02;
-        const opacity = 0.3 + 0.7 * Math.abs(Math.sin(s.twinkle + s.o * 10));
+        img.style.transform = `rotate(${rock + lean}deg)`;
+
+        requestAnimationFrame(frame);
+      }
+
+      requestAnimationFrame(frame);
+    })();
+  </script>
+
+  <!-- Particle Sphere -->
+  <script>
+    (function () {
+      const canvas = document.getElementById('particle-canvas');
+      const ctx    = canvas.getContext('2d');
+
+      const PARTICLE_N = 900;
+      const RADIUS     = 200;
+      const ROT_SPEED  = 0.0022;
+      const X_TILT     = 0.18;
+
+      let W, H, CX, CY;
+      let rotY = 0;
+
+      /* Fibonacci sphere — uniform point distribution */
+      const pts = [];
+      const golden = Math.PI * (3 - Math.sqrt(5));
+      for (let i = 0; i < PARTICLE_N; i++) {
+        const y     = 1 - (i / (PARTICLE_N - 1)) * 2;
+        const r     = Math.sqrt(1 - y * y);
+        const theta = golden * i;
+        pts.push({
+          x:  Math.cos(theta) * r,
+          y,
+          z:  Math.sin(theta) * r,
+          sz: Math.random() * 1.0 + 0.3,
+          bri: Math.random() * 0.5 + 0.5,
+        });
+      }
+
+      function resize() {
+        W  = canvas.width  = window.innerWidth;
+        H  = canvas.height = canvas.parentElement.offsetHeight || window.innerHeight;
+        CX = W / 2;
+        CY = H / 2;
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        rotY += ROT_SPEED;
+
+        const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+        const cosX = Math.cos(X_TILT), sinX = Math.sin(X_TILT);
+
+        /* Ambient sphere glow */
+        const glowGrad = ctx.createRadialGradient(CX, CY, 0, CX, CY, RADIUS * 1.7);
+        glowGrad.addColorStop(0,    'rgba(0,130,124,0.10)');
+        glowGrad.addColorStop(0.45, 'rgba(0,130,124,0.04)');
+        glowGrad.addColorStop(1,    'rgba(0,0,0,0)');
+        ctx.fillStyle = glowGrad;
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(200,200,255,${opacity})`;
+        ctx.arc(CX, CY, RADIUS * 1.7, 0, Math.PI * 2);
         ctx.fill();
 
-        // Slow drift upward
-        s.y -= s.speed;
-        if (s.y < 0) { s.y = H; s.x = Math.random() * W; }
-      });
-    }
+        /* Project + depth-sort */
+        const proj = pts.map(p => {
+          const x1 = p.x * cosY - p.z * sinY;
+          const z1 = p.x * sinY + p.z * cosY;
+          const y1 = p.y  * cosX - z1 * sinX;
+          const z2 = p.y  * sinX + z1 * cosX;
+          const sc = 480 / (480 + z2 * RADIUS);
+          return { sx: CX + x1*RADIUS*sc, sy: CY + y1*RADIUS*sc, z: z2, sz: p.sz, bri: p.bri };
+        }).sort((a, b) => a.z - b.z);
 
-    // ── Shooting stars ─────────────────────────────
-    const shooters = [];
-    function spawnShooter() {
-      shooters.push({
-        x: Math.random() * W,
-        y: Math.random() * H * 0.5,
-        len: Math.random() * 120 + 60,
-        speed: Math.random() * 8 + 5,
-        opacity: 1,
-        angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
-      });
-    }
-    setInterval(spawnShooter, 2800);
+        proj.forEach(p => {
+          const d     = (p.z + 1) * 0.5;
+          const alpha = p.bri * (0.07 + d * 0.93);
+          const size  = p.sz  * (0.3  + d * 0.9);
 
-    function drawShooters() {
-      shooters.forEach((s, i) => {
-        const ex = s.x + Math.cos(s.angle) * s.len;
-        const ey = s.y + Math.sin(s.angle) * s.len;
-        const grad = ctx.createLinearGradient(s.x, s.y, ex, ey);
-        grad.addColorStop(0, `rgba(255,255,255,0)`);
-        grad.addColorStop(1, `rgba(200,200,255,${s.opacity})`);
-        ctx.beginPath();
-        ctx.moveTo(s.x, s.y);
-        ctx.lineTo(ex, ey);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        s.x += Math.cos(s.angle) * s.speed;
-        s.y += Math.sin(s.angle) * s.speed;
-        s.opacity -= 0.015;
-        if (s.opacity <= 0) shooters.splice(i, 1);
-      });
-    }
+          const r = Math.round(d * 55);
+          const g = Math.round(80  + d * 155);
+          const b = Math.round(100 + d * 152);
 
-    function loop(t) {
-      drawStars(t);
-      drawShooters();
-      requestAnimationFrame(loop);
-    }
+          ctx.beginPath();
+          ctx.arc(p.sx, p.sy, size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+          ctx.fill();
 
-    window.addEventListener('resize', () => { resize(); initStars(); });
-    resize(); initStars();
-    requestAnimationFrame(loop);
+          if (d > 0.55 && alpha > 0.28) {
+            const hr = size * 3.8;
+            const hg = ctx.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, hr);
+            hg.addColorStop(0, `rgba(${r},${g},${b},${alpha * 0.38})`);
+            hg.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.beginPath();
+            ctx.arc(p.sx, p.sy, hr, 0, Math.PI * 2);
+            ctx.fillStyle = hg;
+            ctx.fill();
+          }
+        });
 
-    // ── Floating data particles ────────────────────
-    const words = ['GPA','SAT','TOEFL','Common App','Why Us?','IB','AP','UC','Essay','Letters','Deadline','Major','Admit','Reach','Match'];
-    for (let i = 0; i < 12; i++) {
-      const el = document.createElement('div');
-      el.className = 'data-particle';
-      el.textContent = words[Math.floor(Math.random() * words.length)];
-      const leftPct = Math.random() * 100;
-      const duration = Math.random() * 18 + 14;
-      const delay = Math.random() * -duration;
-      el.style.cssText = `left:${leftPct}%;animation-duration:${duration}s;animation-delay:${delay}s;`;
-      document.body.appendChild(el);
-    }
+        requestAnimationFrame(draw);
+      }
+
+      resize();
+      draw();
+      window.addEventListener('resize', resize);
+    })();
   </script>
 
 </body>

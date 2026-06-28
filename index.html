@@ -321,7 +321,28 @@
       justify-content: space-between;
     }
 
-    .card-icon { font-size: 22px; line-height: 1; }
+    .card-icon { display: block; flex-shrink: 0; }
+
+    /* ── Card icon animations ── */
+    .star-a { animation: star-twinkle 2.2s ease-in-out infinite; }
+    .star-b { animation: star-twinkle 2.2s ease-in-out infinite 1.1s; }
+    @keyframes star-twinkle {
+      0%,100% { opacity: 1;    }
+      50%     { opacity: 0.12; }
+    }
+    .ink-draw {
+      stroke-dasharray: 30;
+      animation: path-reveal 3s ease-in-out infinite;
+    }
+    .traj-draw {
+      stroke-dasharray: 35;
+      animation: path-reveal 3.5s ease-in-out infinite;
+    }
+    @keyframes path-reveal {
+      0%       { stroke-dashoffset: 35; opacity: 1; }
+      60%      { stroke-dashoffset: 0;  opacity: 1; }
+      85%,100% { stroke-dashoffset: 0;  opacity: 0; }
+    }
 
     .card-arrow {
       width: 28px;
@@ -525,7 +546,21 @@
         <a href="https://chatgpt.com/g/g-689b0f604f8c8191b231b2e4d9ae315e-college-degree-search"
            target="_blank" rel="noopener" class="tool-card">
           <div class="card-top">
-            <span class="card-icon">🔍</span>
+            <!-- Degree Search: constellation inside magnifying glass -->
+            <svg class="card-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="16" r="10" stroke="#00827c" stroke-width="2" fill="rgba(0,130,124,0.10)"/>
+              <circle cx="16" cy="16" r="6"  stroke="#cbfffc" stroke-width="0.7" opacity="0.28"/>
+              <circle cx="11" cy="11" r="1.6" fill="#cbfffc" class="star-a"/>
+              <circle cx="21" cy="10" r="1.3" fill="#cbfffc" class="star-b"/>
+              <circle cx="23" cy="18" r="1.6" fill="#cbfffc" class="star-a" style="animation-delay:0.6s"/>
+              <circle cx="12" cy="21" r="1.1" fill="#cbfffc" class="star-b" style="animation-delay:1.5s"/>
+              <circle cx="16" cy="16" r="1.1" fill="#edfffe"/>
+              <line x1="11" y1="11" x2="16" y2="16" stroke="#cbfffc" stroke-width="0.7" opacity="0.30"/>
+              <line x1="21" y1="10" x2="16" y2="16" stroke="#cbfffc" stroke-width="0.7" opacity="0.30"/>
+              <line x1="23" y1="18" x2="16" y2="16" stroke="#cbfffc" stroke-width="0.7" opacity="0.30"/>
+              <line x1="12" y1="21" x2="16" y2="16" stroke="#cbfffc" stroke-width="0.7" opacity="0.30"/>
+              <line x1="23.5" y1="23.5" x2="33" y2="33" stroke="#00827c" stroke-width="2.8" stroke-linecap="round"/>
+            </svg>
             <span class="card-arrow">↗</span>
           </div>
           <h3 class="card-heading">Degree Search Owl</h3>
@@ -536,7 +571,21 @@
         <a href="https://chatgpt.com/g/g-687b0b42fc1c819181a8e787b799556a-college-essay-coach"
            target="_blank" rel="noopener" class="tool-card">
           <div class="card-top">
-            <span class="card-icon">✍️</span>
+            <!-- Essay Coach: aurora quill with animated ink stroke -->
+            <svg class="card-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="qg" x1="30" y1="3" x2="17" y2="30" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#edfffe"/>
+                  <stop offset="100%" stop-color="#00827c"/>
+                </linearGradient>
+              </defs>
+              <line x1="30" y1="3" x2="17" y2="30" stroke="url(#qg)" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M30 3 C35 8 35 19 28 27" stroke="url(#qg)" stroke-width="1.5" fill="none" opacity="0.75" stroke-linecap="round"/>
+              <path d="M30 3 C25 9 22 17 20 23" stroke="url(#qg)" stroke-width="1.5" fill="none" opacity="0.45" stroke-linecap="round"/>
+              <path d="M17 30 L14 37 L20 33 Z" fill="#00827c"/>
+              <path class="ink-draw" d="M5 34 Q9 29 14 31 Q17 33 13 38"
+                    stroke="#cbfffc" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            </svg>
             <span class="card-arrow">↗</span>
           </div>
           <h3 class="card-heading">Essay Coach Owl</h3>
@@ -547,7 +596,19 @@
         <a href="https://chatgpt.com/g/g-687b0cd5faec8191875a3f012a151ee8-college-specific-supplement-essay-guide"
            target="_blank" rel="noopener" class="tool-card">
           <div class="card-top">
-            <span class="card-icon">🏛️</span>
+            <!-- Supplement Essay: fanned stacked documents + star badge -->
+            <svg class="card-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="8" width="22" height="27" rx="2.5" fill="#003734" stroke="#00827c" stroke-width="1.2" transform="rotate(-7 15 21)"/>
+              <rect x="6" y="6" width="22" height="27" rx="2.5" fill="#003734" stroke="#00827c" stroke-width="1.2" transform="rotate(-2 17 20)"/>
+              <rect x="8" y="4" width="22" height="27" rx="2.5" fill="#011d1c" stroke="#cbfffc" stroke-width="1.5"/>
+              <line x1="13" y1="11" x2="26" y2="11" stroke="#cbfffc" stroke-width="1.2" opacity="0.70"/>
+              <line x1="13" y1="15" x2="26" y2="15" stroke="#cbfffc" stroke-width="1.2" opacity="0.70"/>
+              <line x1="13" y1="19" x2="23" y2="19" stroke="#cbfffc" stroke-width="1.2" opacity="0.50"/>
+              <line x1="13" y1="23" x2="25" y2="23" stroke="#cbfffc" stroke-width="1.2" opacity="0.45"/>
+              <line x1="13" y1="27" x2="21" y2="27" stroke="#cbfffc" stroke-width="1.2" opacity="0.35"/>
+              <circle cx="31" cy="10" r="6" fill="#012624" stroke="#cbfffc" stroke-width="1.3"/>
+              <polygon points="31,5.5 31.94,8.21 34.80,8.26 32.52,9.99 33.35,12.74 31,11.1 28.65,12.74 29.48,9.99 27.20,8.26 30.06,8.21" fill="#cbfffc"/>
+            </svg>
             <span class="card-arrow">↗</span>
           </div>
           <h3 class="card-heading">Supplement Essay Coach</h3>
@@ -558,7 +619,22 @@
         <a href="https://chatgpt.com/g/g-69f8210a6fb88191bda7dfa1b88d7605-summer-planner"
            target="_blank" rel="noopener" class="tool-card">
           <div class="card-top">
-            <span class="card-icon">☀️</span>
+            <!-- Summer Planning: calendar with animated rising trajectory -->
+            <svg class="card-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="9" width="26" height="22" rx="3" fill="#011d1c" stroke="#00827c" stroke-width="1.5"/>
+              <rect x="4" y="9" width="26" height="8" rx="3" fill="#00827c"/>
+              <rect x="4" y="14" width="26" height="3" fill="#00827c"/>
+              <line x1="11" y1="6" x2="11" y2="12" stroke="#cbfffc" stroke-width="2" stroke-linecap="round"/>
+              <line x1="23" y1="6" x2="23" y2="12" stroke="#cbfffc" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="10" cy="22" r="1.3" fill="#cbfffc" opacity="0.50"/>
+              <circle cx="17" cy="22" r="1.3" fill="#cbfffc" opacity="0.50"/>
+              <circle cx="24" cy="22" r="1.3" fill="#cbfffc" opacity="0.50"/>
+              <circle cx="10" cy="28" r="1.3" fill="#cbfffc" opacity="0.50"/>
+              <circle cx="17" cy="28" r="1.3" fill="#cbfffc" opacity="0.50"/>
+              <path class="traj-draw" d="M10 28 Q15 23 21 19 L28 13"
+                    stroke="#cbfffc" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+              <path d="M28 13 L24 15 M28 13 L26 17" stroke="#cbfffc" stroke-width="1.6" stroke-linecap="round" opacity="0.8"/>
+            </svg>
             <span class="card-arrow">↗</span>
           </div>
           <h3 class="card-heading">Summer Planning Owl</h3>

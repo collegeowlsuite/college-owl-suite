@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Book — College Owl Suite</title>
+  <meta name="description" content="University Admissions for International Students — the definitive guide for international students and families navigating applications worldwide. Written by a 15-year international school counselor." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Design Tokens ─────────────────────────────────────────────────── */
+    :root {
+      --surface-abyss:  #012624;
+      --surface-trench: #011d1c;
+      --surface-reef:   #003734;
+
+      --color-snow:   #ffffff;
+      --color-fog:    #bbc7c6;
+      --color-ice:    #edfffe;
+      --color-ash:    #333333;
+      --color-teal:   #00827c;
+
+      --grad-current: linear-gradient(90deg, #00827c 0%, #cbfffc 100%);
+      --grad-aurora:  linear-gradient(90deg, #cbfffc 0%, #edfffe 26%, #fffdfa 48%, #fad1ff 89%);
+
+      --font: 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+      --max-w:    1200px;
+      --nav-h:    64px;
+      --card-pad: 40px;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--surface-abyss);
+      color: var(--color-fog);
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.5;
+      letter-spacing: 0.3px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ─── Layout ─────────────────────────────────────────────────────────── */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* ─── Navigation ─────────────────────────────────────────────────────── */
+    .topnav {
+      position: fixed;
+      inset: 0 0 auto;
+      height: var(--nav-h);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      background: rgba(1,38,36,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,130,124,0.12);
+    }
+
+    .topnav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-snow);
+      letter-spacing: 1.04px;
+      text-transform: uppercase;
+    }
+
+    .nav-logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--surface-reef);
+      border: 1px solid var(--color-ash);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-snow);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    /* ─── Buttons ─────────────────────────────────────────────────────────── */
+    .btn-ghost {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 11px 22px;
+      border-radius: 6px;
+      background: transparent;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-snow);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+      cursor: pointer;
+      isolation: isolate;
+      transition: background 0.2s;
+      border: none;
+    }
+
+    .btn-ghost::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 6px;
+      padding: 1px;
+      background: var(--grad-aurora);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .btn-ghost:hover { background: rgba(255,255,255,0.04); }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 6px;
+      background: var(--grad-current);
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--surface-trench);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      border: none;
+    }
+
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ─── Eyebrow ─────────────────────────────────────────────────────────── */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-teal);
+      flex-shrink: 0;
+    }
+
+    .eyebrow-text {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-fog);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+    }
+
+    /* ─── Hero ────────────────────────────────────────────────────────────── */
+    .book-hero {
+      padding-top: calc(var(--nav-h) + 80px);
+      padding-bottom: 100px;
+    }
+
+    .book-hero .container {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    /* ─── Cover image ─────────────────────────────────────────────────────── */
+    .cover-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+
+    .cover-wrap {
+      position: relative;
+      width: 280px;
+    }
+
+    .cover-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px 10px 10px 4px;
+      box-shadow:
+        -8px 8px 0 #001110,
+        0 20px 60px rgba(0,0,0,0.7),
+        0 0 0 1px rgba(0,130,124,0.15);
+    }
+
+    /* Spine sheen */
+    .cover-wrap::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(to right, rgba(0,0,0,0.5), rgba(255,255,255,0.06));
+      border-radius: 4px 0 0 4px;
+      z-index: 1;
+    }
+
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(0,130,124,0.12);
+      border: 1px solid rgba(0,130,124,0.35);
+      font-size: 11px;
+      font-weight: 500;
+      color: #cbfffc;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    /* ─── Text col ────────────────────────────────────────────────────────── */
+    .book-text-col {
+      padding-top: 8px;
+    }
+
+    .book-title {
+      font-size: clamp(38px, 4.5vw, 62px);
+      font-weight: 400;
+      color: var(--color-snow);
+      line-height: 1.05;
+      letter-spacing: -1.22px;
+      margin: 16px 0 20px;
+    }
+
+    .book-subhead {
+      font-size: 16px;
+      color: var(--color-fog);
+      line-height: 1.65;
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+
+    /* ─── Stats ───────────────────────────────────────────────────────────── */
+    .stats {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(0,130,124,0.18);
+    }
+
+    .stat-item {}
+    .stat-number {
+      font-size: 30px;
+      font-weight: 400;
+      color: var(--color-snow);
+      display: block;
+      letter-spacing: -0.5px;
+    }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-fog);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    /* ─── Format cards ────────────────────────────────────────────────────── */
+    .formats-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-fog);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 16px;
+    }
+
+    .format-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .format-divider {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--color-fog);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+      opacity: 0.35;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 4px 0;
+    }
+    .format-divider::before,
+    .format-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(0,130,124,0.15);
+    }
+
+    .format-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      background: var(--surface-trench);
+      border: 1px solid rgba(0,130,124,0.14);
+      border-radius: 10px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .format-card:hover {
+      background: var(--surface-reef);
+      border-color: rgba(0,130,124,0.35);
+    }
+
+    .format-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .format-icon {
+      font-size: 22px;
+      width: 32px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .format-name {
+      font-size: 14px;
+      color: var(--color-snow);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .format-detail {
+      font-size: 12px;
+      color: var(--color-fog);
+      opacity: 0.55;
+    }
+
+    .format-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .format-price {
+      text-align: right;
+    }
+    .format-price-main {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--color-snow);
+      display: block;
+    }
+    .format-price-note {
+      font-size: 11px;
+      color: var(--color-fog);
+      opacity: 0.45;
+      display: block;
+    }
+
+    .format-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-family: var(--font);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+      cursor: default;
+      background: rgba(0,130,124,0.12);
+      border: 1px solid rgba(0,130,124,0.25);
+      color: var(--color-fog);
+      opacity: 0.6;
+    }
+
+    .format-btn.active {
+      background: var(--grad-current);
+      border: none;
+      color: var(--surface-trench);
+      font-weight: 500;
+      cursor: pointer;
+      opacity: 1;
+    }
+    .format-btn.active:hover { opacity: 0.88; }
+
+    /* ─── Free tools note ─────────────────────────────────────────────────── */
+    .free-note {
+      font-size: 13px;
+      color: var(--color-fog);
+      line-height: 1.6;
+      opacity: 0.7;
+    }
+
+    .free-note a {
+      color: #cbfffc;
+      opacity: 1;
+      text-decoration: underline;
+      text-decoration-color: rgba(203,255,252,0.3);
+    }
+
+    .free-note a:hover { text-decoration-color: rgba(203,255,252,0.8); }
+
+    /* ─── Inside section ──────────────────────────────────────────────────── */
+    .inside-section {
+      padding: 80px 0;
+      border-top: 1px solid rgba(0,130,124,0.12);
+    }
+
+    .inside-section .eyebrow { margin-bottom: 20px; }
+
+    .section-title {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 400;
+      color: var(--color-snow);
+      line-height: 1.1;
+      letter-spacing: -1.22px;
+      margin-bottom: 48px;
+      max-width: 560px;
+    }
+
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .chapter-item {
+      padding: 20px 22px;
+      background: var(--surface-trench);
+      border: 1px solid rgba(0,130,124,0.12);
+      border-radius: 10px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .chapter-item:hover {
+      background: var(--surface-reef);
+      border-color: rgba(0,130,124,0.3);
+    }
+
+    .chapter-num {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--color-teal);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .chapter-title {
+      font-size: 14px;
+      color: var(--color-snow);
+      line-height: 1.4;
+    }
+
+    /* ─── Country tags ────────────────────────────────────────────────────── */
+    .countries-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .country-tag {
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--surface-trench);
+      border: 1px solid rgba(0,130,124,0.18);
+      color: var(--color-fog);
+      transition: border-color 0.2s;
+    }
+
+    .country-tag:hover { border-color: rgba(0,130,124,0.45); }
+
+    /* ─── Author strip ────────────────────────────────────────────────────── */
+    .author-section {
+      padding: 80px 0;
+      border-top: 1px solid rgba(0,130,124,0.12);
+    }
+
+    .author-quote {
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 400;
+      color: var(--color-snow);
+      line-height: 1.55;
+      letter-spacing: -0.2px;
+      font-style: italic;
+      margin-bottom: 24px;
+      max-width: 800px;
+    }
+
+    .author-credit {
+      font-size: 13px;
+      color: var(--color-fog);
+      opacity: 0.65;
+    }
+
+    .author-credit strong {
+      color: #cbfffc;
+      opacity: 1;
+    }
+
+    /* ─── Footer ──────────────────────────────────────────────────────────── */
+    .footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--color-ash);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-brand {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-fog);
+      letter-spacing: 1.44px;
+      text-transform: uppercase;
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: var(--color-fog);
+      opacity: 0.45;
+    }
+
+    /* ─── Responsive ──────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .book-hero .container {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .cover-col { align-items: center; }
+      .cover-wrap { width: 220px; }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 24px; }
+      .nav-links  { display: none; }
+      .book-hero  { padding-top: calc(var(--nav-h) + 48px); padding-bottom: 64px; }
+      .stats      { gap: 24px; }
+      .format-right { gap: 10px; }
+      :root { --card-pad: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="topnav">
+    <div class="container">
+      <a href="/" class="nav-logo">
+        <span class="nav-logo-icon">🦉</span>
+        College Owl Suite
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#tools">Tools</a></li>
+        <li><a href="/#planning">Planning</a></li>
+        <li><a href="mailto:info@collegeowlsuite.com">Contact</a></li>
+      </ul>
+      <a href="/#tools" class="btn-ghost">Free Tools</a>
+    </div>
+  </nav>
+
+
+  <!-- Book Hero -->
+  <section class="book-hero">
+    <div class="container">
+
+      <!-- Cover -->
+      <div class="cover-col">
+        <div class="cover-wrap">
+          <img class="cover-img" src="book-cover.jpg" alt="University Admissions for International Students — book cover" />
+        </div>
+        <span class="cover-badge">✦ Updated Edition 2026–27</span>
+      </div>
+
+      <!-- Info + Buy -->
+      <div class="book-text-col">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          <span class="eyebrow-text">The Guidebook</span>
+        </div>
+
+        <h1 class="book-title">University admissions<br>without the fear.</h1>
+
+        <p class="book-subhead">
+          A four-year companion for international students and families navigating applications
+          to the US, UK, Canada, Australia, Singapore, Hong Kong, Japan, and South Korea.
+          Written by a 15-year international school counselor — not an agent, not a reels personality.
+        </p>
+
+        <div class="stats">
+          <div class="stat-item">
+            <span class="stat-number">83</span>
+            <span class="stat-label">Pages</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">8</span>
+            <span class="stat-label">Country Systems</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">9</span>
+            <span class="stat-label">Chapters</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">4</span>
+            <span class="stat-label">Free AI Tools</span>
+          </div>
+        </div>
+
+        <p class="formats-label">Choose your format</p>
+
+        <div class="format-cards">
+
+          <div class="format-card">
+            <div class="format-info">
+              <div class="format-icon">📗</div>
+              <div>
+                <span class="format-name">Paperback</span>
+                <span class="format-detail">Full color · 8.5×11 · Ships worldwide via Amazon</span>
+              </div>
+            </div>
+            <div class="format-right">
+              <div class="format-price">
+                <span class="format-price-main">$19.99</span>
+                <span class="format-price-note">+ shipping</span>
+              </div>
+              <span class="format-btn">Coming soon</span>
+            </div>
+          </div>
+
+          <div class="format-divider">Digital editions</div>
+
+          <div class="format-card">
+            <div class="format-info">
+              <div class="format-icon">📱</div>
+              <div>
+                <span class="format-name">Kindle</span>
+                <span class="format-detail">Fixed-layout · Reads best on tablet or Kindle app</span>
+              </div>
+            </div>
+            <div class="format-right">
+              <span class="format-btn">Coming soon</span>
+            </div>
+          </div>
+
+          <div class="format-card">
+            <div class="format-info">
+              <div class="format-icon">⬇️</div>
+              <div>
+                <span class="format-name">Direct Download</span>
+                <span class="format-detail">PDF · Instant · via Gumroad</span>
+              </div>
+            </div>
+            <div class="format-right">
+              <span class="format-btn">Coming soon</span>
+            </div>
+          </div>
+
+          <div class="format-card">
+            <div class="format-info">
+              <div class="format-icon">🍎</div>
+              <div>
+                <span class="format-name">Apple Books</span>
+                <span class="format-detail">Fixed-layout EPUB · iPad + iPhone</span>
+              </div>
+            </div>
+            <div class="format-right">
+              <span class="format-btn">Coming soon</span>
+            </div>
+          </div>
+
+          <div class="format-card">
+            <div class="format-info">
+              <div class="format-icon">▶️</div>
+              <div>
+                <span class="format-name">Google Play Books</span>
+                <span class="format-detail">Fixed-layout EPUB · Android + browser</span>
+              </div>
+            </div>
+            <div class="format-right">
+              <span class="format-btn">Coming soon</span>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="free-note">
+          Every copy comes with access to four free AI tools — essay coach, degree search,
+          supplement guide, and summer planner.
+          <a href="/">Explore the free tools →</a>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- What's Inside -->
+  <section class="inside-section">
+    <div class="container">
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        <span class="eyebrow-text">What's inside</span>
+      </div>
+      <h2 class="section-title">Structured around the four years that actually matter.</h2>
+
+      <div class="chapters-grid">
+        <div class="chapter-item">
+          <div class="chapter-num">Prelude</div>
+          <div class="chapter-title">Why This Book Exists</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-num">Chapter 1</div>
+          <div class="chapter-title">The Roadmap</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-num">Chapter 2</div>
+          <div class="chapter-title">Choosing Your Curriculum — AP, IB, A-levels</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-num">Chapter 3</div>
+          <div class="chapter-title">Building the Foundation — Grades 9–10</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-num">Chapter 4</div>
+          <div class="chapter-title">Grade 11 — The Critical Year</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-num">Chapter 5</div>
+          <div class="chapter-title">The College Essay</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-num">Chapter 6</div>
+          <div class="chapter-title">The Grade 12 Application Year</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-num">Chapter 7</div>
+          <div class="chapter-title">For Parents</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-num">Chapter 8</div>
+          <div class="chapter-title">Life After University</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-num">Chapter 9</div>
+          <div class="chapter-title">Quick Reference Guide</div>
+        </div>
+      </div>
+
+      <div class="countries-row">
+        <span class="country-tag">🇺🇸 United States</span>
+        <span class="country-tag">🇬🇧 United Kingdom</span>
+        <span class="country-tag">🇨🇦 Canada</span>
+        <span class="country-tag">🇦🇺 Australia</span>
+        <span class="country-tag">🇸🇬 Singapore</span>
+        <span class="country-tag">🇭🇰 Hong Kong</span>
+        <span class="country-tag">🇯🇵 Japan</span>
+        <span class="country-tag">🇰🇷 South Korea</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Author -->
+  <section class="author-section">
+    <div class="container">
+      <p class="author-quote">
+        "Families who navigate admissions successfully understand the process clearly enough to trust it.
+        Families who struggle have been sold fear instead of knowledge."
+      </p>
+      <p class="author-credit">
+        — <strong>John Georgie</strong>, 15-year international school educator and college counselor.
+        AP &amp; IB specialist. Member, IACAC.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-brand">College Owl Suite</span>
+        <span class="footer-note">Built for ambitious students everywhere.</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

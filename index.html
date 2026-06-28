@@ -399,6 +399,45 @@
       background: var(--color-teal);
     }
 
+    /* ─── Book CTA Card ──────────────────────────────────────────────────── */
+    .book-cta-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 60px;
+      align-items: center;
+      padding: var(--card-pad);
+      background: var(--surface-trench);
+      border-radius: 16px;
+      transition: background 0.25s;
+    }
+    .book-cta-card:hover { background: var(--surface-reef); }
+    .book-cta-title {
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--color-snow);
+      line-height: 1.2;
+      letter-spacing: -0.3px;
+      margin-bottom: 12px;
+    }
+    .book-cta-body {
+      font-size: 14px;
+      color: var(--color-fog);
+      line-height: 1.65;
+      max-width: 520px;
+    }
+    .book-cta-cover { flex-shrink: 0; }
+    .book-cta-img {
+      width: 120px;
+      height: auto;
+      display: block;
+      border-radius: 3px 8px 8px 3px;
+      box-shadow: -4px 4px 0 #001110, 0 12px 32px rgba(0,0,0,0.6);
+    }
+    @media (max-width: 768px) {
+      .book-cta-card { grid-template-columns: 1fr; gap: 28px; }
+      .book-cta-cover { display: none; }
+    }
+
     /* ─── Tracker Card ────────────────────────────────────────────────────── */
     .tracker-card {
       display: grid;
@@ -489,6 +528,7 @@
       <ul class="nav-links">
         <li><a href="#tools">Tools</a></li>
         <li><a href="#planning">Planning</a></li>
+        <li><a href="/book">Book</a></li>
         <li><a href="mailto:info@collegeowlsuite.com">Contact</a></li>
       </ul>
 
@@ -646,6 +686,26 @@
     </div>
   </section>
 
+
+  <!-- Book CTA -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <a href="/book" class="book-cta-card">
+        <div class="book-cta-text">
+          <div class="eyebrow" style="margin-bottom:16px;">
+            <span class="eyebrow-dot"></span>
+            <span class="eyebrow-text">The Guidebook</span>
+          </div>
+          <h3 class="book-cta-title">University Admissions for International Students</h3>
+          <p class="book-cta-body">The complete four-year companion — covering US, UK, Canada, Australia, Singapore, Hong Kong, Japan, and South Korea. Written by an international school college counselor.</p>
+          <span class="btn-primary" style="margin-top:24px; display:inline-flex;">Get the Book ↗</span>
+        </div>
+        <div class="book-cta-cover">
+          <img src="book-cover.jpg" alt="University Admissions for International Students guidebook cover" class="book-cta-img" />
+        </div>
+      </a>
+    </div>
+  </section>
 
   <!-- Planning Section -->
   <section id="planning" class="section" style="padding-top: 0;">

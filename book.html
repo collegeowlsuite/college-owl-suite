@@ -461,6 +461,16 @@
     }
     .format-btn.active:hover { opacity: 0.88; }
 
+    .format-btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .format-btn-group .format-btn {
+      font-size: 10.5px;
+      padding: 7px 14px;
+    }
+
     /* ─── Free tools note ─────────────────────────────────────────────────── */
     .free-note {
       font-size: 13px;
@@ -911,7 +921,10 @@
                 <span class="format-price-main">$19.99</span>
                 <span class="format-price-note">+ shipping</span>
               </div>
-              <a href="https://www.amazon.com/University-Admissions-International-Students-Georgie/dp/106680950X" target="_blank" rel="noopener" class="format-btn active">Buy on Amazon</a>
+              <div class="format-btn-group">
+                <a href="https://www.amazon.com/University-Admissions-International-Students-Georgie/dp/106680950X" target="_blank" rel="noopener" class="format-btn active">🇺🇸&nbsp; Amazon US</a>
+                <a href="https://www.amazon.co.uk/University-Admissions-International-Students-Georgie/dp/106680950X?ref_=ast_author_mpb" target="_blank" rel="noopener" class="format-btn active">🇬🇧&nbsp; Amazon UK</a>
+              </div>
             </div>
           </div>
 

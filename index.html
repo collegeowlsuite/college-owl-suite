@@ -415,6 +415,171 @@
       background: var(--color-teal);
     }
 
+    /* ─── Tool Card Access Buttons ───────────────────────────────────────── */
+    .card-access {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-chatgpt {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 8px;
+      background: rgba(0,130,124,0.14);
+      border: 1px solid rgba(0,130,124,0.38);
+      color: var(--color-ice);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-chatgpt:hover {
+      background: rgba(0,130,124,0.28);
+      border-color: rgba(0,130,124,0.65);
+    }
+
+    .btn-mcp {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 8px;
+      background: rgba(237,255,254,0.05);
+      border: 1px solid rgba(237,255,254,0.14);
+      color: var(--color-fog);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-mcp:hover {
+      background: rgba(237,255,254,0.1);
+      border-color: rgba(237,255,254,0.3);
+      color: var(--color-snow);
+    }
+
+    /* ─── MCP Connect Panel ───────────────────────────────────────────────── */
+    .mcp-panel {
+      margin-top: 24px;
+      padding: 32px 36px;
+      background: var(--surface-trench);
+      border-radius: 16px;
+      border: 1px solid rgba(0,130,124,0.22);
+    }
+
+    .mcp-panel-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .mcp-panel-heading {
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--color-snow);
+      letter-spacing: -0.25px;
+      margin-bottom: 8px;
+    }
+
+    .mcp-panel-sub {
+      font-size: 14px;
+      color: var(--color-fog);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    .mcp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: rgba(0,130,124,0.14);
+      border: 1px solid rgba(0,130,124,0.35);
+      color: var(--color-teal);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .mcp-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .mcp-step {
+      padding: 16px 18px;
+      background: var(--surface-abyss);
+      border-radius: 10px;
+      border: 1px solid var(--color-ash);
+    }
+
+    .mcp-step-num {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--color-teal);
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .mcp-step-text {
+      font-size: 13px;
+      color: var(--color-fog);
+      line-height: 1.55;
+    }
+
+    .mcp-endpoints {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .mcp-endpoint {
+      padding: 14px 16px;
+      background: var(--surface-abyss);
+      border-radius: 10px;
+      border: 1px solid var(--color-ash);
+    }
+
+    .mcp-endpoint-name {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-snow);
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+    }
+
+    .mcp-endpoint-url {
+      font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--color-teal);
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .mcp-steps { grid-template-columns: 1fr; }
+      .mcp-endpoints { grid-template-columns: 1fr; }
+      .mcp-panel { padding: 24px 20px; }
+      .mcp-panel-top { flex-direction: column; }
+    }
+
     /* ─── Book CTA Card ──────────────────────────────────────────────────── */
     .book-cta-card {
       display: grid;
@@ -817,8 +982,7 @@
 
       <div class="tools-grid">
 
-        <a href="https://chatgpt.com/g/g-689b0f604f8c8191b231b2e4d9ae315e-college-degree-search"
-           target="_blank" rel="noopener" class="tool-card">
+        <div class="tool-card">
           <div class="card-top">
             <!-- Degree Search: constellation inside magnifying glass -->
             <svg class="card-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -835,15 +999,17 @@
               <line x1="12" y1="21" x2="16" y2="16" stroke="#cbfffc" stroke-width="0.7" opacity="0.30"/>
               <line x1="23.5" y1="23.5" x2="33" y2="33" stroke="#00827c" stroke-width="2.8" stroke-linecap="round"/>
             </svg>
-            <span class="card-arrow">↗</span>
           </div>
           <h3 class="card-heading">Degree Search Owl</h3>
           <p class="card-body">Compare universities, entry requirements, and tuition worldwide. Find the programs that fit your profile and ambitions.</p>
+          <div class="card-access">
+            <a href="https://chatgpt.com/g/g-689b0f604f8c8191b231b2e4d9ae315e-college-degree-search" target="_blank" rel="noopener" class="btn-chatgpt">↗ ChatGPT</a>
+            <a href="#mcp-connect" class="btn-mcp">◈ Claude MCP</a>
+          </div>
           <span class="card-tag"><span class="card-tag-dot"></span>Research</span>
-        </a>
+        </div>
 
-        <a href="https://chatgpt.com/g/g-687b0b42fc1c819181a8e787b799556a-college-essay-coach"
-           target="_blank" rel="noopener" class="tool-card">
+        <div class="tool-card">
           <div class="card-top">
             <!-- Essay Coach: aurora quill with animated ink stroke -->
             <svg class="card-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -860,15 +1026,17 @@
               <path class="ink-draw" d="M5 34 Q9 29 14 31 Q17 33 13 38"
                     stroke="#cbfffc" stroke-width="1.6" fill="none" stroke-linecap="round"/>
             </svg>
-            <span class="card-arrow">↗</span>
           </div>
           <h3 class="card-heading">Essay Coach Owl</h3>
           <p class="card-body">Craft your authentic Common App personal essay. Reveal your story with clarity and confidence that admissions officers notice.</p>
+          <div class="card-access">
+            <a href="https://chatgpt.com/g/g-687b0b42fc1c819181a8e787b799556a-college-essay-coach" target="_blank" rel="noopener" class="btn-chatgpt">↗ ChatGPT</a>
+            <a href="#mcp-connect" class="btn-mcp">◈ Claude MCP</a>
+          </div>
           <span class="card-tag"><span class="card-tag-dot"></span>Writing</span>
-        </a>
+        </div>
 
-        <a href="https://chatgpt.com/g/g-687b0cd5faec8191875a3f012a151ee8-college-specific-supplement-essay-guide"
-           target="_blank" rel="noopener" class="tool-card">
+        <div class="tool-card">
           <div class="card-top">
             <!-- Supplement Essay: fanned stacked documents + star badge -->
             <svg class="card-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -883,15 +1051,17 @@
               <circle cx="31" cy="10" r="6" fill="#012624" stroke="#cbfffc" stroke-width="1.3"/>
               <polygon points="31,5.5 31.94,8.21 34.80,8.26 32.52,9.99 33.35,12.74 31,11.1 28.65,12.74 29.48,9.99 27.20,8.26 30.06,8.21" fill="#cbfffc"/>
             </svg>
-            <span class="card-arrow">↗</span>
           </div>
           <h3 class="card-heading">Supplement Essay Coach</h3>
           <p class="card-body">Write specific, compelling Why Us and Why Major essays that demonstrate genuine fit for every school on your list.</p>
+          <div class="card-access">
+            <a href="https://chatgpt.com/g/g-687b0cd5faec8191875a3f012a151ee8-college-specific-supplement-essay-guide" target="_blank" rel="noopener" class="btn-chatgpt">↗ ChatGPT</a>
+            <a href="#mcp-connect" class="btn-mcp">◈ Claude MCP</a>
+          </div>
           <span class="card-tag"><span class="card-tag-dot"></span>Supplements</span>
-        </a>
+        </div>
 
-        <a href="https://chatgpt.com/g/g-69f8210a6fb88191bda7dfa1b88d7605-summer-planner"
-           target="_blank" rel="noopener" class="tool-card">
+        <div class="tool-card">
           <div class="card-top">
             <!-- Summer Planning: calendar with animated rising trajectory -->
             <svg class="card-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -909,14 +1079,66 @@
                     stroke="#cbfffc" stroke-width="1.6" fill="none" stroke-linecap="round"/>
               <path d="M28 13 L24 15 M28 13 L26 17" stroke="#cbfffc" stroke-width="1.6" stroke-linecap="round" opacity="0.8"/>
             </svg>
-            <span class="card-arrow">↗</span>
           </div>
           <h3 class="card-heading">Summer Planning Owl</h3>
           <p class="card-body">Build a standout summer with research projects, competitions, and initiatives that strengthen your application profile.</p>
+          <div class="card-access">
+            <a href="https://chatgpt.com/g/g-69f8210a6fb88191bda7dfa1b88d7605-summer-planner" target="_blank" rel="noopener" class="btn-chatgpt">↗ ChatGPT</a>
+            <a href="#mcp-connect" class="btn-mcp">◈ Claude MCP</a>
+          </div>
           <span class="card-tag"><span class="card-tag-dot"></span>Strategy</span>
-        </a>
+        </div>
 
       </div>
+
+      <!-- MCP Connect Panel -->
+      <div class="mcp-panel" id="mcp-connect">
+        <div class="mcp-panel-top">
+          <div>
+            <h3 class="mcp-panel-heading">Connect via Claude MCP</h3>
+            <p class="mcp-panel-sub">All four tools are available as open MCP servers — no API key required. Connect them to Claude.ai or any MCP-compatible client in three steps.</p>
+          </div>
+          <span class="mcp-badge">
+            <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#00827c"/></svg>
+            No Auth Required
+          </span>
+        </div>
+
+        <div class="mcp-steps">
+          <div class="mcp-step">
+            <div class="mcp-step-num">Step 1</div>
+            <div class="mcp-step-text">Open <strong style="color:var(--color-snow)">Claude.ai</strong> → Settings → Integrations → Add custom integration</div>
+          </div>
+          <div class="mcp-step">
+            <div class="mcp-step-num">Step 2</div>
+            <div class="mcp-step-text">Paste the SSE endpoint URL for the tool you want. No token or API key needed.</div>
+          </div>
+          <div class="mcp-step">
+            <div class="mcp-step-num">Step 3</div>
+            <div class="mcp-step-text">Start a new chat — the tool's capabilities are now available in your conversation.</div>
+          </div>
+        </div>
+
+        <div class="mcp-endpoints">
+          <div class="mcp-endpoint">
+            <div class="mcp-endpoint-name">Degree Search Owl</div>
+            <div class="mcp-endpoint-url">https://college-owl-degree-search.collegeowlsuite.workers.dev/sse</div>
+          </div>
+          <div class="mcp-endpoint">
+            <div class="mcp-endpoint-name">Essay Coach Owl</div>
+            <div class="mcp-endpoint-url">https://college-owl-essay-coach.collegeowlsuite.workers.dev/sse</div>
+          </div>
+          <div class="mcp-endpoint">
+            <div class="mcp-endpoint-name">Supplement Essay Coach</div>
+            <div class="mcp-endpoint-url">https://college-owl-supplement-coach.collegeowlsuite.workers.dev/sse</div>
+          </div>
+          <div class="mcp-endpoint">
+            <div class="mcp-endpoint-name">Summer Planning Owl</div>
+            <div class="mcp-endpoint-url">https://college-owl-summer-planner.collegeowlsuite.workers.dev/sse</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
